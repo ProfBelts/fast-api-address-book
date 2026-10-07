@@ -42,7 +42,6 @@ def not_found() -> HTTPException:
 
 @app.post("/addresses", response_model=Address, status_code=201)
 def create_address(body: AddressIn, db: Db):
-    """Create an address."""
     cursor = db.execute(
         "INSERT INTO addresses (address, latitude, longitude) VALUES (?, ?, ?)",
         (body.address, body.latitude, body.longitude),
@@ -53,7 +52,6 @@ def create_address(body: AddressIn, db: Db):
 
 @app.get("/addresses", response_model=list[Address])
 def list_addresses(db: Db):
-    """List all addresses."""
     return [dict(row) for row in db.execute("SELECT * FROM addresses ORDER BY id")]
 
 
@@ -72,7 +70,6 @@ def nearby_addresses(query: Annotated[NearbyQuery, Query()], db: Db):
 
 @app.get("/addresses/{address_id}", response_model=Address)
 def get_address(address_id: int, db: Db):
-    """Get one address."""
     row = db.execute("SELECT * FROM addresses WHERE id = ?", (address_id,)).fetchone()
     if row is None:
         raise not_found()
@@ -81,7 +78,6 @@ def get_address(address_id: int, db: Db):
 
 @app.put("/addresses/{address_id}", response_model=Address)
 def update_address(address_id: int, body: AddressIn, db: Db):
-    """Replace an address."""
     cursor = db.execute(
         "UPDATE addresses SET address = ?, latitude = ?, longitude = ? WHERE id = ?",
         (body.address, body.latitude, body.longitude, address_id),
@@ -94,7 +90,6 @@ def update_address(address_id: int, body: AddressIn, db: Db):
 
 @app.delete("/addresses/{address_id}", status_code=204)
 def delete_address(address_id: int, db: Db):
-    """Delete an address."""
     if db.execute("DELETE FROM addresses WHERE id = ?", (address_id,)).rowcount == 0:
         raise not_found()
     logger.info("Deleted address id=%s", address_id)

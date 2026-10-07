@@ -16,7 +16,6 @@ def connect() -> sqlite3.Connection:
 
 
 def init_db() -> None:
-    """Create the addresses table if it does not exist yet."""
     with closing(connect()) as connection:
         connection.execute(
             """
