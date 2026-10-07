@@ -56,3 +56,43 @@ python -m pytest
 - `app/schemas.py`: Pydantic validation models
 - `app/database.py`: SQLite connection and table setup
 - `tests/test_api.py`: API tests
+
+## Screenshots
+
+Taken from Swagger UI against a running server with an empty database.
+
+**Swagger UI**
+
+![Swagger UI with all endpoints](screenshots/01-swagger-docs.png)
+
+**Create an address (201)**
+
+![POST /addresses returns 201](screenshots/02-create-address-201.png)
+
+**List addresses (200)**
+
+![GET /addresses lists three addresses](screenshots/03-list-addresses-200.png)
+
+**Search within 5 km (200):** the two Manila addresses, nearest first
+
+![GET /addresses/nearby with radius 5 km](screenshots/04-nearby-5km-200.png)
+
+**Search within 600 km (200):** Cebu City is included at about 570 km
+
+![GET /addresses/nearby with radius 600 km](screenshots/05-nearby-600km-200.png)
+
+**Update an address (200)**
+
+![PUT /addresses/1 returns the updated address](screenshots/06-update-address-200.png)
+
+**Delete an address (204)**
+
+![DELETE /addresses/1 returns 204](screenshots/07-delete-address-204.png)
+
+**Get a deleted address (404)**
+
+![GET /addresses/1 returns 404 after delete](screenshots/08-get-deleted-address-404.png)
+
+**Invalid latitude rejected (422)**
+
+![POST /addresses with latitude 95 returns 422](screenshots/09-validation-error-422.png)
